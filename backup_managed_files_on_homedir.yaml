@@ -8,7 +8,7 @@
   loop:
     - .bash_profile
     - .bashrc
-    - .config
+    - .config  # note gh folder
     - .editorconfig
     - .gitconfig
     - .profile
