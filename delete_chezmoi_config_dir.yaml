@@ -1,0 +1,8 @@
+---
+- name: Delete Chezmoi config directory on the target host # noqa: ignore-errors
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/chezmoi"
+    state: absent
+    force: true
+  ignore_errors: true
+  tags: [clean]

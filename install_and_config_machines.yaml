@@ -25,12 +25,15 @@
     - name: Make github as a known remote host on the target host
       ansible.builtin.include_tasks:
         file: make_github_as_known_host_for_target_host.yaml
+    - name: Delete chezmoi config dir
+      ansible.builtin.include_tasks:
+        file: delete_chezmoi_config_dir.yaml
     - name: Full access (ssh) install of Chezmoi (and tools) on the target host
       ansible.builtin.include_tasks:
         file: chezmoi_ssh_install_and_update.yaml
-    # - name: Chezmoi update
-    #   ansible.builtin.include_tasks:
-    #     file: chezmoi_update.yaml
+    - name: Chezmoi update
+      ansible.builtin.include_tasks:
+        file: chezmoi_update.yaml
     - name: Run Topgrade to update all tools
       ansible.builtin.include_tasks:
         file: run_topgrade.yaml
