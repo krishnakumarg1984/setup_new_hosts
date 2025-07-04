@@ -1,0 +1,15 @@
+---
+- name: Check the status of the async ssh chezmoi install tasks
+  ansible.builtin.async_status:
+    jid: "{{ ssh_chezmoi_task.ansible_job_id }}"
+  register: ssh_chezmoi_task_result
+  until: ssh_chezmoi_task_result.finished
+  retries: 100
+  delay: 10
+- name: Check the status of the async https chezmoi install tasks
+  ansible.builtin.async_status:
+    jid: "{{ https_chezmoi_task.ansible_job_id }}"
+  register: https_chezmoi_task_result
+  until: https_chezmoi_task_result.finished
+  retries: 100
+  delay: 10

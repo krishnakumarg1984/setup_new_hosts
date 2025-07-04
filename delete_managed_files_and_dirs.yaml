@@ -1,0 +1,29 @@
+---
+- name: Delete managed files on the target host # noqa: ignore-errors
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: absent
+    force: true
+  loop: [.bash_profile, .bashrc, .editorconfig, .profile]
+  ignore_errors: true
+  tags: [clean]
+- name: Delete managed dirs on the target host # noqa: ignore-errors
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: absent
+    force: true
+  loop:
+    - .cache
+    - .config
+    - .local/share/bash-completion
+    - .local/share/cargo
+    - .local/share/chezmoi
+    - .local/share/fonts
+    - .local/share/man
+    - .local/share/mise
+    - .local/share/nvim
+    - .local/share/rustup
+    - .local/share/stew
+    - .local/state
+  ignore_errors: true
+  tags: [clean]

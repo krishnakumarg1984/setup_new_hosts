@@ -1,0 +1,6 @@
+---
+- name: Run topgrade to update all installed tools on the target host # noqa: no-changed-when
+  ansible.builtin.shell: |-
+    test -x $HOME/.config/pixi/bin/topgrade &&
+    $HOME/.config/pixi/bin/topgrade --yes --cleanup --disable waydroid --disable system --disable flatpak --disable firmware
+  tags: [update_pkgs]

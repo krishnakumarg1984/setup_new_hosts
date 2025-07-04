@@ -1,0 +1,7 @@
+---
+- name: Issue chezmoi update on the target host # noqa: no-changed-when
+  ansible.builtin.shell: |-
+    test -x $HOME/.local/bin/chezmoi &&
+    $HOME/.local/bin/chezmoi state reset --force &&
+    (echo 'a' | $HOME/.local/bin/chezmoi apply --force)
+  tags: [chezmoi_update]

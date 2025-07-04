@@ -1,0 +1,11 @@
+---
+- name: Make github as a known remote host for the target host
+  ansible.builtin.blockinfile:
+    block: "{{ lookup('ansible.builtin.file', './github_known_hosts') }}"
+    path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
+    create: true
+    append_newline: true
+    prepend_newline: true
+    mode: "644"
+    # validate: ssh -T git@github.com
+  tags: [authorize_github]

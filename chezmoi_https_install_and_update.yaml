@@ -1,0 +1,10 @@
+---
+- name: Install chezmoi using https, apply dotfiles and install tooling on the target host # noqa: no-changed-when
+  ansible.builtin.shell: |-
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply --force git@github.com:krishnakumarg1984/chezmoi_dotfiles.git
+  tags: [chezmoi_limited_access_install]
+  timeout: 900
+  # async: 900
+  # poll: 0
+  # register: https_chezmoi_task
+  # when: inventory_hostname not in groups["remote_linux_machines"]

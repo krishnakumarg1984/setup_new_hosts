@@ -1,0 +1,44 @@
+---
+- name: Install dotfiles and tools on new machines
+  hosts: all
+  timeout: 900
+  environment:
+    PIXI_NO_PATH_UPDATE: "1"
+    GITHUB_TOKEN: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      66613531393765393661306263346634323231303865356266633566303863336331663831653639
+      3034663139666536373033383763303038333564363130370a616462316562363838306233313530
+      37346337616332393066653561323638346164313234336233396436373936353937376364653439
+      3866393838323735610a643939623663626566323336346433656431303165653865313539386662
+      35663764663932343366646534613332363663633561653330653965303238643166313663313037
+      63633331363061333137663131343931323235323665663166656666663863663733326365626130
+      62653163343338623661396462313038316635646637373133646465346365306436353165303366
+      35303366666334303931393964623531636431653731643065633136306535363437626465343762
+      3535
+  tasks:
+    - name: Backup managed files and dirs on the target host
+      ansible.builtin.include_tasks:
+        file: backup_managed_files_on_homedir.yaml
+    - name: Delete managed files and dirs on the target host
+      ansible.builtin.include_tasks:
+        file: delete_managed_files_and_dirs.yaml
+    - name: Make github as a known remote host on the target host
+      ansible.builtin.include_tasks:
+        file: make_github_as_known_host_for_target_host.yaml
+    - name: Full access (ssh) install of Chezmoi (and tools) on the target host
+      ansible.builtin.include_tasks:
+        file: chezmoi_ssh_install_and_update.yaml
+    - name: Chezmoi update
+      ansible.builtin.include_tasks:
+        file: chezmoi_update.yaml
+    - name: Run Topgrade to update all tools
+      ansible.builtin.include_tasks:
+        file: run_topgrade.yaml
+      # when: inventory_hostname in groups["local_linux_machines"]
+    # - name: Limited access (https) install of chezmoi (and tools) on the target host
+    #   ansible.builtin.include_tasks:
+    #     file: chezmoi_https_install_and_update.yaml
+    #   # when: inventory_hostname not in groups["remote_linux_machines"]
+    # - name: Check the status of the async chezmoi install tasks
+    #   ansible.builtin.include_tasks:
+    #     file: check_async_chezmoi_task_status.yaml
