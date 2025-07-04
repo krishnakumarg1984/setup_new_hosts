@@ -28,9 +28,9 @@
     - name: Full access (ssh) install of Chezmoi (and tools) on the target host
       ansible.builtin.include_tasks:
         file: chezmoi_ssh_install_and_update.yaml
-    - name: Chezmoi update
-      ansible.builtin.include_tasks:
-        file: chezmoi_update.yaml
+    # - name: Chezmoi update
+    #   ansible.builtin.include_tasks:
+    #     file: chezmoi_update.yaml
     - name: Run Topgrade to update all tools
       ansible.builtin.include_tasks:
         file: run_topgrade.yaml

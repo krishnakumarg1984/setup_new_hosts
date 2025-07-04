@@ -49,7 +49,7 @@
     - .config/wget
     - .config/yamllint
     - .config/zathura
-    - .config/go 
+    - .config/go
     - .config/pixi
     - .config/Code
     - .local/share/bash-completion
