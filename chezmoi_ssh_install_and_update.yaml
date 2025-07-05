@@ -1,12 +1,13 @@
 ---
-- name: Copy private ssh key to the target host # noqa: ignore-errors
+- name: Copy private ssh key to the target host  # noqa: ignore-errors
   ansible.builtin.copy:
     src: ~/.ssh/id_ed25519
-    dest: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
-    mode: "400"
+    dest: '{{ ansible_env.HOME }}/.ssh/id_ed25519'
+    mode: '400'
   tags: [chezmoi_full_access_install]
-  # when: inventory_hostname in groups["local_linux_machines"]
-- name: Install chezmoi using ssh, apply dotfiles and install tooling on the target host # noqa: no-changed-when
+  # when: inventory_hostname in groups["local_linux_hosts"]
+- name: Install chezmoi using ssh, apply dotfiles and install tooling on the target
+    host  # noqa: no-changed-when
   ansible.builtin.shell: |-
     sh -c "echo 'a' | $(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --ssh --apply --force git@github.com:krishnakumarg1984/chezmoi_dotfiles.git
   tags: [chezmoi_full_access_install]
@@ -14,4 +15,4 @@
   # async: 900
   # poll: 0
   # register: ssh_chezmoi_task
-  # when: inventory_hostname in groups["local_linux_machines"]
+  # when: inventory_hostname in groups["local_linux_hosts"]
