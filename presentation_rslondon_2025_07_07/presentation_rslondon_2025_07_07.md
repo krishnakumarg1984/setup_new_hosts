@@ -477,6 +477,7 @@ So, is there a solution?
 <!-- new_lines: 1 -->
 * Cross-platform
 <!-- end_slide -->
+
 <!-- column_layout: [1, 1] -->
 <!-- column: 0 -->
 ![image:width:75%](./figures/pixi.jpg)
@@ -489,8 +490,8 @@ So, is there a solution?
 * sync
 <!-- new_lines: 1 -->
 * manifest file `pixi-global.toml`
-<!-- pause -->
 <!-- column: 1 -->
+<!-- pause -->
 ![](./figures/mise.png)
 <!-- new_lines: 1 -->
 # Mise
@@ -502,6 +503,7 @@ So, is there a solution?
 * global `config.toml`
 
 <!-- end_slide -->
+
 Keeping tools up to date
 ===
 ![](./figures/topgrade.png)
@@ -510,5 +512,6 @@ Keeping tools up to date
 
 Further resources
 ===
+
 ## Worflow configuration codes, presentation in HTML & PDF formats
 ![image:width:75%](./figures/code_and_slides.png)
