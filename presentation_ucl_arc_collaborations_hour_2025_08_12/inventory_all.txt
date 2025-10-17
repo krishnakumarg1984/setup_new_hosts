@@ -1,0 +1,28 @@
+graph TD;
+
+  all
+  arm64_remote_linux_hosts
+  blend
+  local_hosts
+  local_linux_hosts
+  remote_hosts
+  remote_linux_hosts
+  ucl_cricket
+  ucl_locust
+  ucl_mandelbrot
+  ucl_terrarium
+  x86_64_local_linux_hosts
+  x86_64_remote_linux_hosts
+
+  all --> local_hosts;
+  all --> remote_hosts;
+  arm64_remote_linux_hosts --> ucl_locust;
+  arm64_remote_linux_hosts --> ucl_cricket;
+  local_hosts --> local_linux_hosts;
+  local_linux_hosts --> x86_64_local_linux_hosts;
+  remote_hosts --> remote_linux_hosts;
+  remote_linux_hosts --> arm64_remote_linux_hosts;
+  remote_linux_hosts --> x86_64_remote_linux_hosts;
+  x86_64_local_linux_hosts --> blend;
+  x86_64_remote_linux_hosts --> ucl_terrarium;
+  x86_64_remote_linux_hosts --> ucl_mandelbrot;

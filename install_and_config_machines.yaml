@@ -20,9 +20,9 @@
     # - name: Backup managed files and dirs on the target host
     #   ansible.builtin.include_tasks:
     #     file: backup_managed_files_on_homedir.yaml
-    # - name: Delete managed files and dirs on the target host
-    #   ansible.builtin.include_tasks:
-    #     file: delete_managed_files_and_dirs.yaml
+    - name: Delete managed files and dirs on the target host
+      ansible.builtin.include_tasks:
+        file: delete_managed_files_and_dirs.yaml
     - name: Make github as a known remote host on the target host
       ansible.builtin.include_tasks:
         file: make_github_as_known_host_for_target_host.yaml
