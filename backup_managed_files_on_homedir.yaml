@@ -2,13 +2,13 @@
 - name: Backup the managed files on the target host # noqa: ignore-errors
   ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/{{ item }}"
-    dest: "{{ ansible_env.HOME }}/{{ item }}.{{ inventory_hostname }}"
-    mode: "777"
+    dest: "{{ ansible_env.HOME }}/{{ item }}.{{ inventory_hostname }}.orig"
+    mode: "preserve"
     remote_src: true
   loop:
     - .bash_profile
     - .bashrc
-    - .config # note gh folder
+    - .config
     - .editorconfig
     - .gitconfig
     - .profile

@@ -1,10 +1,10 @@
 ---
 - name: Install dotfiles and tools on new hosts
-  # hosts: all
-  hosts: remote_linux_hosts
+  hosts: localhost
   timeout: 900
   environment:
     PIXI_NO_PATH_UPDATE: '1'
+    UV_NO_MODIFY_PATH: '1'
     GITHUB_TOKEN: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       66613531393765393661306263346634323231303865356266633566303863336331663831653639
@@ -20,15 +20,12 @@
     # - name: Backup managed files and dirs on the target host
     #   ansible.builtin.include_tasks:
     #     file: backup_managed_files_on_homedir.yaml
-    - name: Delete managed files and dirs on the target host
-      ansible.builtin.include_tasks:
-        file: delete_managed_files_and_dirs.yaml
-    - name: Make github as a known remote host on the target host
-      ansible.builtin.include_tasks:
-        file: make_github_as_known_host_for_target_host.yaml
-    - name: Delete chezmoi config dir
-      ansible.builtin.include_tasks:
-        file: delete_chezmoi_config_dir.yaml
+    # - name: Delete managed files and dirs on the target host
+    #   ansible.builtin.include_tasks:
+    #     file: delete_managed_files_and_dirs.yaml
+    # - name: Make github as a known remote host on the target host
+    #   ansible.builtin.include_tasks:
+    #     file: make_github_as_known_host_for_target_host.yaml
     - name: Full access (ssh) install of Chezmoi (and tools) on the target host
       ansible.builtin.include_tasks:
         file: chezmoi_ssh_install_and_update.yaml
@@ -39,10 +36,3 @@
       ansible.builtin.include_tasks:
         file: run_topgrade.yaml
       # when: inventory_hostname in groups["local_linux_hosts"]
-    # - name: Limited access (https) install of chezmoi (and tools) on the target host
-    #   ansible.builtin.include_tasks:
-    #     file: chezmoi_https_install_and_update.yaml
-    #  # when: inventory_hostname not in groups["remote_linux_hosts"]
-    # - name: Check the status of the async chezmoi install tasks
-    #   ansible.builtin.include_tasks:
-    #     file: check_async_chezmoi_task_status.yaml
