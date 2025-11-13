@@ -10,4 +10,4 @@
   ansible.builtin.shell: |-
     sh -c "echo 'a' | $(wget -qO- get.chezmoi.io)" -- -b $HOME/.local/bin init --ssh --apply --force git@github.com:krishnakumarg1984/chezmoi_dotfiles.git
   tags: [chezmoi_full_access_install]
-  timeout: 900
+  # timeout: 900
