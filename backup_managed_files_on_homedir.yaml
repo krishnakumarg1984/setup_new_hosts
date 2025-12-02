@@ -1,19 +1,11 @@
 ---
-- name: Backup the managed files on the target host # noqa: ignore-errors
+- name: Backup the managed files on the target user account's home drive # noqa: ignore-errors
   ansible.builtin.copy:
     src: "{{ ansible_env.HOME }}/{{ item }}"
     dest: "{{ ansible_env.HOME }}/{{ item }}.{{ inventory_hostname }}.orig"
     mode: "preserve"
     remote_src: true
-  loop:
-    - .bash_profile
-    - .bashrc
-    - .config
-    - .editorconfig
-    - .gitconfig
-    - .profile
-    - .ssh/authorized_keys
-    - .ssh/config
-    - .ssh/known_hosts
+    force: no  # don't overwrite even if contents of the source file are different since we need to avoid overwriting with our custom dotfiles when running this playbook more than once
+  loop: "{{ managed_dotfiles }}"
   ignore_errors: true
   tags: [backup]

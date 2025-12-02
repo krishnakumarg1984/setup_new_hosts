@@ -1,5 +1,5 @@
 ---
-- name: Run topgrade to update all installed tools on the target host # noqa: no-changed-when
+- name: Run topgrade to update all installed CLI/TUI tools on the target user account's home drive # noqa: no-changed-when
   ansible.builtin.shell: |-
     test -x $HOME/.config/pixi/bin/topgrade &&
     $HOME/.config/pixi/bin/topgrade

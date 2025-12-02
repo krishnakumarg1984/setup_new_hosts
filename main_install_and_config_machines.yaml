@@ -1,0 +1,98 @@
+---
+- name: Install dotfiles and CLI/TUI tools and utility programs in a user account's home drive without root
+  hosts: localhost # highly flexible. Can be a single entry or a list containing any combination of a) 'localhost' (without quotes) or b) any hosts or groups from project/global inventory file(s) or c) any shortname/nickname defined in ssh config at user or system-level or d) the computer's hosts file (/etc/hosts on *nix systems or C:\Windows\System32\drivers\etc\hosts on MS Windows systems) or e) any hosts/groups defined in local or global configuration files for ansible
+  timeout: 900   # in seconds
+  vars:
+    managed_dotfiles:  # sysadmin-configured or other default i.e. non-empty config files that may (or may not) be present under the user account's home directory on remote hosts. Their original contents need to be backed up prior to being replaced with chezmoi-managed file contents for each of these filenames. Separately, in .chezmoiignore we suppress the presence of some of these config files if their corresponding CLI/TUI tools are not required on remote ssh hosts
+      - .bash_profile
+      - .bashrc
+      - .editorconfig
+      - .profile
+      - .config/ansible
+      - .config/appman        # appman is not likely to be needed on remote machines
+      - .config/bash
+      - .config/bat
+      - .config/bleachbit     # bleachbit is not likely to be needed on remote machines
+      - .config/chezmoi
+      - .config/cmakelintrc
+      - .config/Code
+      - .config/conda
+      - .config/containers
+      - .config/direnv
+      - .config/eza
+      - .config/git
+      - .config/glow
+      - .config/go
+      - .config/info
+      - .config/latexmk
+      - .config/less
+      - .config/mise
+      - .config/nano
+      - .config/npm
+      - .config/nvim
+      - .config/pixi
+      - .config/ptpython
+      - .config/python
+      - .config/readline
+      - .config/screen
+      - .config/sh
+      - .config/starship.toml
+      - .config/stew
+      - .config/tlrc
+      - .config/tmux
+      - .config/topgrade
+      - .config/vim
+      - .config/w3m
+      - .config/wezterm         # wezterm is not likely to be needed on remote machines
+      - .config/wget
+      - .config/yamllint
+      - .config/zathura         # zathura is not likely to be needed on remote machines
+      - .editorconfig
+      - .gitconfig
+      - .local/share/bash-completion
+      - .local/share/cargo
+      - .local/share/chezmoi
+      - .local/share/fonts
+      - .local/share/man
+      - .local/share/mise
+      - .local/share/nvim
+      - .local/share/rustup
+      - .local/share/stew
+      - .local/state
+      - .ssh/authorized_keys  # careful. Might get locked-out of the remote system if the relevant public keya are not present in the chezmoi-managed dotfiles (currently they contain code for populating this with a list of public keys configured in my github account. If at least one of these keys are not enough to authenticate, must manually copy the contents of the backed up file prior to logout!)
+      - .ssh/config
+      - .ssh/known_hosts
+  environment:
+    PIXI_NO_PATH_UPDATE: '1' # pixi installer script should not silently modify dotfiles (since they are explicitly managed by chezmoi)
+    WGETRC: ''  # override is needed for wget to download CLI/TUI tools if the shell's WGETRC env variable does not point to a valid wgetrc file
+    GITHUB_TOKEN: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      66613531393765393661306263346634323231303865356266633566303863336331663831653639
+      3034663139666536373033383763303038333564363130370a616462316562363838306233313530
+      37346337616332393066653561323638346164313234336233396436373936353937376364653439
+      3866393838323735610a643939623663626566323336346433656431303165653865313539386662
+      35663764663932343366646534613332363663633561653330653965303238643166313663313037
+      63633331363061333137663131343931323235323665663166656666663863663733326365626130
+      62653163343338623661396462313038316635646637373133646465346365306436353165303366
+      35303366666334303931393964623531636431653731643065633136306535363437626465343762
+      3535
+  tasks:
+    - name: Backup managed files and dirs on the target user account's home drive
+      ansible.builtin.include_tasks:
+        file: backup_managed_files_on_homedir.yaml
+    - name: Delete managed files and dirs on the target user account's home drive
+      ansible.builtin.include_tasks:
+        file: delete_managed_files_and_dirs.yaml
+    - name: Make github as a known remote host on the target user account's home drive
+      ansible.builtin.include_tasks:
+        file: make_github_as_known_host_for_target_host.yaml
+    - name: Full access (ssh) install of Chezmoi (and CLI/TUI tools) on the target user account's home drive
+      ansible.builtin.include_tasks:
+        file: chezmoi_ssh_install_and_update.yaml
+    - name: Chezmoi update
+      ansible.builtin.include_tasks:
+        file: chezmoi_update.yaml
+    - name: Run Topgrade to update all CLI/TUI tools
+      ansible.builtin.include_tasks:
+        file: run_topgrade.yaml
+      # when: inventory_hostname in groups["local_linux_hosts"]

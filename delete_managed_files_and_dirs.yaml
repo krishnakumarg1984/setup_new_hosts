@@ -1,5 +1,5 @@
 ---
-- name: Delete managed files on the target host # noqa: ignore-errors
+- name: Delete managed files on the target user account's home drive # noqa: ignore-errors
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/{{ item }}"
     state: absent
@@ -7,61 +7,12 @@
   loop: [.bash_profile, .bashrc, .editorconfig, .profile]
   ignore_errors: true
   tags: [clean]
-- name: Delete managed dirs on the target host # noqa: ignore-errors
+- name: Delete managed dirs on the target user account's home drive # noqa: ignore-errors
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/{{ item }}"
     state: absent
     force: true
   loop:
     - .cache
-    - .config/ansible
-    - .config/appman
-    - .config/bash
-    - .config/bat
-    - .config/bleachbit
-    - .config/chezmoi
-    - .config/cmakelintrc
-    - .config/conda
-    - .config/containers
-    - .config/direnv
-    - .config/eza
-    - .config/git
-    - .config/glow
-    - .config/info
-    - .config/latexmk
-    - .config/less
-    - .config/mise
-    - .config/nano
-    - .config/npm
-    - .config/nvim
-    - .config/ptpython
-    - .config/python
-    - .config/readline
-    - .config/screen
-    - .config/sh
-    - .config/starship.toml
-    - .config/stew
-    - .config/tlrc
-    - .config/tmux
-    - .config/topgrade
-    - .config/vim
-    - .config/w3m
-    - .config/wezterm
-    - .config/wget
-    - .config/yamllint
-    - .config/zathura
-    - .config/go
-    - .config/pixi
-    - .config/Code
-    - .local/share/bash-completion
-    - .local/share/cargo
-    - .local/share/chezmoi
-    - .local/share/fonts
-    - .local/share/man
-    - .local/share/mise
-    - .local/share/nvim
-    - .local/share/rustup
-    - .local/share/stew
-    - .local/state
   ignore_errors: true
   tags: [clean]
